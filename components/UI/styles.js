@@ -31,6 +31,25 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.primary100,
     borderRadius: 4,
   },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+    backgroundColor: GlobalStyles.colors.primary700,
+  },
+  text: {
+    color: "white",
+    fontSize: 24,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  title: {
+    color: "white",
+    fontSize: 32,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
 });
 
 export default styles;
