@@ -1,13 +1,18 @@
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { View } from "react-native";
 import IconButton from "../../components/UI/IconButton";
 import { GlobalStyles } from "../../constants/styles";
 import { styles } from "./styles";
-import Button from "../../components/UI/Button";
 import { ExpenesContext } from "../../store/Expenses-Context/expenses-context";
 import ExpenseForm from "../../components/ManageExpense/ExpenseForm";
+import { deleteExpense, storeExpense, updateExpense } from "../../util/http";
+import LoadingOverlay from "../../components/UI/LoadingOverlay";
+import ErrorOverlay from "../../components/UI/ErrorOverlay";
 
 const ManageExpense = ({ route, navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const expenseContext = useContext(ExpenesContext);
   const editedExpense = route.params?.expenseId;
   const isEditing = !!editedExpense;
@@ -25,18 +30,46 @@ const ManageExpense = ({ route, navigation }) => {
   const cancelhandler = () => {
     navigation.goBack();
   };
-  const confirmHandler = (expenseData) => {
-    if (isEditing) {
-      expenseContext.updateExpense(editedExpense, expenseData);
-    } else {
-      expenseContext.addExpense(expenseData);
+
+  const confirmHandler = async (expenseData) => {
+    setIsLoading(true);
+    try {
+      if (isEditing) {
+        expenseContext.updateExpense(editedExpense, expenseData);
+        await updateExpense(editedExpense, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expenseContext.addExpense({ ...expenseData, id: id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
     }
-    navigation.goBack();
   };
-  const deleteExpenseHandler = () => {
-    expenseContext.deleteExpense(editedExpense);
-    navigation.goBack();
+  const deleteExpenseHandler = async () => {
+    setIsLoading(true);
+    try {
+      await deleteExpense(editedExpense);
+      expenseContext.deleteExpense(editedExpense);
+      navigation.goBack();
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
   };
+
+  const errorHandler = () => {
+    setError(null);
+  };
+
+  if (error && !isLoading) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay visible={isLoading} />;
+  }
 
   return (
     <View style={styles.container}>
