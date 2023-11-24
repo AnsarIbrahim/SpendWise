@@ -65,8 +65,8 @@ SpendWise: React Native & Redux powered expense tracker. Effortlessly manage fin
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link]()
-- [APK File]()
+- [Live Demo Link](https://spendwisemoney.netlify.app/)
+- [APK File](https://drive.google.com/file/d/18PNz1d13I1KVttjPHEhKLlMmJrPe34xE/view?usp=sharing)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
