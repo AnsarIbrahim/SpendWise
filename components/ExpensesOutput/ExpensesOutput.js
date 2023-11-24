@@ -1,13 +1,18 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import ExpensesSummary from "../ExpensesSummary/ExpensesSummary";
 import ExpensesList from "../ExpensesList/ExpensesList";
 import { styles } from "./styles";
 
-const ExpensesOutput = ({ expenses, expensesPeriod }) => {
+const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText }) => {
+  let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+
+  if (expenses.length > 0) {
+    content = <ExpensesList expenses={expenses} />;
+  }
   return (
     <View style={styles.container}>
       <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-      <ExpensesList expenses={expenses} />
+      {content}
     </View>
   );
 };
