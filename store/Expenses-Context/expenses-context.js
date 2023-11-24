@@ -40,7 +40,7 @@ const ExpensesContextProvider = ({ children }) => {
   };
 
   const updateExpense = (id, expenseData) => {
-    dispatch({ type: "UPDATE", payload: { id, ...expenseData } });
+    dispatch({ type: "UPDATE", payload: { id: id, data: expenseData } });
   };
 
   const deleteExpense = (id) => {
@@ -49,9 +49,9 @@ const ExpensesContextProvider = ({ children }) => {
 
   const value = {
     expenses: expensesState,
-    addExpense,
-    updateExpense,
-    deleteExpense,
+    addExpense: addExpense,
+    updateExpense: updateExpense,
+    deleteExpense: deleteExpense,
   };
 
   return (
